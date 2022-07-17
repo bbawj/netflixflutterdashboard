@@ -60,10 +60,13 @@ class MyBarChart extends ConsumerWidget {
                       BarTouchTooltipData(
                           getTooltipItem: (group, groupIndex, rod, rodIndex) {
                     final title = data[group.x.toInt()].title;
-                    return BarTooltipItem(
-                        title, const TextStyle(color: Colors.white));
+                    final value = data[group.x.toInt()].imdb_score;
+                    return BarTooltipItem("$title\n Rating: $value",
+                        const TextStyle(color: Colors.white));
                   }), touchCallback: (FlTouchEvent event, response) {
-                    if (response == null || event is! FlTapDownEvent) return;
+                    if (response == null ||
+                        response.spot == null ||
+                        event is! FlTapDownEvent) return;
                     ref.read(titleProvider.state).state =
                         data[response.spot!.touchedBarGroupIndex];
                     openDialog();

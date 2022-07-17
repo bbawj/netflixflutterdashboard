@@ -60,7 +60,7 @@ class CountLineChart extends ConsumerWidget {
     return ratingData.when(
         data: (data) {
           return Padding(
-              padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 40),
+              padding: const EdgeInsets.only(left: 40.0, right: 40.0),
               child: SizedBox(
                   child: LineChart(LineChartData(
                       minY: 0,

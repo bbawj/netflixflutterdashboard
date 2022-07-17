@@ -60,6 +60,18 @@ router.get("/years", async (req, res) => {
   }
 });
 
+router.get("/countries/:year", async (req, res) => {
+  const queryString =
+    "select t.release_year, t.countries as country, count(t.countries) as count FROM (select release_year, unnest(production_countries) as countries from titles) as t WHERE t.release_year=$1 GROUP BY t.countries, t.release_year ORDER BY count DESC;";
+  const year = req.params.year;
+  try {
+    const { rows } = await pool.query(queryString, [year]);
+    return res.status(200).json(rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 router.post("/", async (req, res) => {
   const queryString =
     "INSERT INTO titles (id,title,type,imdb_score,release_year) VALUES ($1,$2,$3,$4,$5) RETURNING *;";

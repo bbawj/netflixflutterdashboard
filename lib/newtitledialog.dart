@@ -95,17 +95,23 @@ class NewTitleDialog extends ConsumerWidget {
                       }
                     },
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        final isValid = formKey.currentState!.validate();
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Globals.red)),
+                        onPressed: () {
+                          final isValid = formKey.currentState!.validate();
 
-                        if (isValid) {
-                          formKey.currentState!.save();
-                          submitForm(id, name, type, rating, year);
-                          Navigator.pop(context);
-                        }
-                      },
-                      child: const Text("Submit"))
+                          if (isValid) {
+                            formKey.currentState!.save();
+                            submitForm(id, name, type, rating, year);
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: const Text("Submit")),
+                  )
                 ]),
               ),
             ));
