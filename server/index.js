@@ -13,7 +13,9 @@ app.use(
 );
 
 const titleRoute = require("./routes/title");
-app.use("/api", titleRoute);
+const creditRoute = require("./routes/credits");
+app.use("/api/title", titleRoute);
+app.use("/api", creditRoute);
 
 app.listen(PORT, () => {
   console.log("Server running on port:", PORT);

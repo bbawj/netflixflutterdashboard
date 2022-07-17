@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:netflixdashboard/barchart.dart';
 import 'package:netflixdashboard/linechart.dart';
 import 'package:netflixdashboard/yearlycount.dart';
 
@@ -25,16 +26,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends ConsumerStatefulWidget {
+  const MyHomePage({Key? key, required String title}) : super(key: key);
 
-  final String title;
+  String get title => "";
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends ConsumerState<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -45,49 +46,106 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final year = ref.watch(yearProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Row(mainAxisSize: MainAxisSize.min, children: const [
+              Text(
+                "Number of ",
+                style: TextStyle(fontSize: 20, color: Colors.blueGrey),
+              ),
               Text("Movies ",
-                  style: TextStyle(color: Globals.red, fontSize: 20)),
+                  style: TextStyle(
+                      color: Globals.red,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)),
               Text(
                 "and ",
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: Colors.blueGrey),
               ),
               Text("Shows ",
-                  style: TextStyle(color: Globals.black, fontSize: 20)),
+                  style: TextStyle(
+                      color: Globals.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)),
               Text(
-                "by release year",
-                style: TextStyle(fontSize: 20),
+                "by Release Year",
+                style: TextStyle(fontSize: 20, color: Colors.blueGrey),
               )
             ]),
-            Container(
-              child: const CountLineChart(),
-              height: 400,
-              width: 800,
+            const Text(
+              "Click below to select a year",
+              style: TextStyle(fontSize: 16, color: Colors.blueGrey),
             ),
-            Container(
-              height: 300,
-              width: 300,
-              child: const RatingLineChart(),
-            )
+            SizedBox(
+              height: 400,
+              width: MediaQuery.of(context).size.width * 1,
+              child: const CountLineChart(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text("Currently Viewing: ",
+                      style: TextStyle(fontSize: 20)),
+                  Text("$year",
+                      style: const TextStyle(fontSize: 20, color: Globals.red)),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 400,
+              width: null,
+              child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: const [
+                        Text("Top 10 Movies"),
+                        Expanded(flex: 1, child: MyBarChart("top", "movie")),
+                      ],
+                    ),
+                    Column(
+                      children: const [
+                        Text("Bottom 10 Movies"),
+                        Expanded(flex: 1, child: MyBarChart("bottom", "movie")),
+                      ],
+                    ),
+                  ]),
+            ),
+            SizedBox(
+              height: 400,
+              width: null,
+              child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: const [
+                        Text("Top 10 Shows"),
+                        Expanded(flex: 1, child: MyBarChart("top", "show")),
+                      ],
+                    ),
+                    Column(
+                      children: const [
+                        Text("Bottom 10 Shows"),
+                        Expanded(flex: 1, child: MyBarChart("bottom", "show")),
+                      ],
+                    ),
+                  ]),
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

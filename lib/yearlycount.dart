@@ -25,10 +25,11 @@ class Count {
 }
 
 Future<List<Count>> fetchCounts() async {
-  final response = await http.get(Uri.parse("$serverUri/api/years"), headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Content-Type": "application/json"
-  });
+  final response = await http.get(Uri.parse("$serverUri/api/title/years"),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json"
+      });
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
@@ -43,7 +44,7 @@ Future<List<Count>> fetchCounts() async {
   }
 }
 
-final ratingProvider = FutureProvider<List<Count>>((ref) async {
+final countProvider = FutureProvider<List<Count>>((ref) async {
   final counts = await fetchCounts();
   return counts;
 });
@@ -55,11 +56,11 @@ class CountLineChart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ratingData = ref.watch(ratingProvider);
+    final ratingData = ref.watch(countProvider);
     return ratingData.when(
         data: (data) {
           return Padding(
-              padding: const EdgeInsets.only(top: 40.0),
+              padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 40),
               child: SizedBox(
                   child: LineChart(LineChartData(
                       minY: 0,
@@ -91,9 +92,7 @@ class CountLineChart extends ConsumerWidget {
                                 colors: [
                                   const Color(0xFFb92028),
                                   const Color(0xFFdf0707)
-                                ]
-                                    .map((color) => color.withOpacity(0.7))
-                                    .toList(),
+                                ].toList(),
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                               ),
@@ -120,6 +119,7 @@ class CountLineChart extends ConsumerWidget {
                             ))
                       ],
                       lineTouchData: LineTouchData(
+                        touchSpotThreshold: 20,
                         handleBuiltInTouches: true,
                         touchTooltipData: LineTouchTooltipData(
                           tooltipBgColor: Color.fromARGB(255, 231, 236, 238)
