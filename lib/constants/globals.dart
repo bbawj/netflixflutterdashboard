@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-String serverUri = "http://localhost:5000";
+String serverUri = "https://netflixdashboard.azurewebsites.net";
 
 class Globals {
   static const Color red = Color(0xFFb92028);
