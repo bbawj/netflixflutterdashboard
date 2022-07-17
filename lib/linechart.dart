@@ -9,17 +9,20 @@ import 'package:netflixdashboard/constants/globals.dart';
 import 'package:netflixdashboard/yearlycount.dart';
 
 class Rating {
+  final String id;
   final String title;
   final int release_year;
   final double imdb_score;
 
   const Rating(
-      {required this.title,
+      {required this.id,
+      required this.title,
       required this.release_year,
       required this.imdb_score});
 
   factory Rating.fromJson(Map<String, dynamic> json) {
     return Rating(
+      id: json['id'],
       title: json['title'],
       release_year: json['release_year'],
       imdb_score: double.parse(json['imdb_score']),
@@ -106,25 +109,25 @@ Future<List<Rating>> fetchBottomMovieRating(int year) async {
 }
 
 final topMovieRatingProvider =
-    FutureProvider.family<List<Rating>, int>((ref, year) async {
+    FutureProvider.autoDispose.family<List<Rating>, int>((ref, year) async {
   final ratings = await fetchTopMovieRating(year);
   return ratings;
 });
 
 final bottomMovieRatingProvider =
-    FutureProvider.family<List<Rating>, int>((ref, year) async {
+    FutureProvider.autoDispose.family<List<Rating>, int>((ref, year) async {
   final ratings = await fetchBottomMovieRating(year);
   return ratings;
 });
 
 final topShowRatingProvider =
-    FutureProvider.family<List<Rating>, int>((ref, year) async {
+    FutureProvider.autoDispose.family<List<Rating>, int>((ref, year) async {
   final ratings = await fetchTopShowRating(year);
   return ratings;
 });
 
 final bottomShowRatingProvider =
-    FutureProvider.family<List<Rating>, int>((ref, year) async {
+    FutureProvider.autoDispose.family<List<Rating>, int>((ref, year) async {
   final ratings = await fetchBottomShowRating(year);
   return ratings;
 });

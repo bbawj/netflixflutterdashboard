@@ -11,6 +11,7 @@ app.use(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
+app.use(express.json());
 
 const titleRoute = require("./routes/title");
 const creditRoute = require("./routes/credits");

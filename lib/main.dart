@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:netflixdashboard/barchart.dart';
 import 'package:netflixdashboard/linechart.dart';
+import 'package:netflixdashboard/newtitledialog.dart';
 import 'package:netflixdashboard/yearlycount.dart';
 
 import 'constants/globals.dart';
@@ -98,6 +99,7 @@ class MyHomePageState extends ConsumerState<MyHomePage> {
                       style: TextStyle(fontSize: 20)),
                   Text("$year",
                       style: const TextStyle(fontSize: 20, color: Globals.red)),
+                  const NewTitleDialog()
                 ],
               ),
             ),
@@ -109,13 +111,13 @@ class MyHomePageState extends ConsumerState<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Column(
-                      children: const [
+                      children: [
                         Text("Top 10 Movies"),
                         Expanded(flex: 1, child: MyBarChart("top", "movie")),
                       ],
                     ),
                     Column(
-                      children: const [
+                      children: [
                         Text("Bottom 10 Movies"),
                         Expanded(flex: 1, child: MyBarChart("bottom", "movie")),
                       ],
@@ -130,13 +132,13 @@ class MyHomePageState extends ConsumerState<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Column(
-                      children: const [
+                      children: [
                         Text("Top 10 Shows"),
                         Expanded(flex: 1, child: MyBarChart("top", "show")),
                       ],
                     ),
                     Column(
-                      children: const [
+                      children: [
                         Text("Bottom 10 Shows"),
                         Expanded(flex: 1, child: MyBarChart("bottom", "show")),
                       ],
